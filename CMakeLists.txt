@@ -19,6 +19,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
 	SDL3::SDL3
@@ -36,3 +37,11 @@ if(WIN32)
 		$<TARGET_FILE_DIR:${PROJECT_NAME}>
 	)
 endif()
+
+add_custom_target(sync_assets ALL
+	COMMAND ${CMAKE_COMMAND} -E rm -rf "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${CMAKE_SOURCE_DIR}/assets"
+		"$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"
+)
+add_dependencies(${PROJECT_NAME} sync_assets)
