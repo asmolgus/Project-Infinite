@@ -1,15 +1,17 @@
 #pragma once
 
 #include <fstream>
-#include <sstream>
-#include <string>
 #include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 
 namespace assetLoader {
-	std::string loadTextFile(const char* path) {
+	inline std::string loadTextFile(const char *path) {
 		std::ifstream file(path);
 		if (!file.is_open()) {
 			std::cerr << "Failed to open file: " << path << "\n";
+			throw std::invalid_argument("Couldn't open file!");
 			return "";
 		}
 		std::stringstream buffer;
